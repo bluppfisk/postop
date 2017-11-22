@@ -1,0 +1,29 @@
+<h1>Feedback Vragen</h1>
+			Vraag een klant om feedback. Vul voornaam, familienaam en emailadres in en we sturen hem of haar een email met een speciale toegangscode.
+			<form action="" method="POST" name="po_request">
+				<table class="wp-list-table widefat fixed striped pages"><tbody>
+					<tr><td class="manage-column">
+						<input type="text" name="po_request_given_name" placeholder="Voornaam">
+					</td><td class="manage-column">
+						<input type="text" name="po_request_family_name" placeholder="Familienaam">
+					</td><td class="manage-column">
+						<input type="text" name="po_request_email" placeholder="Emailadres">
+					</td><td class="manage-column">
+						<input type="submit" name="po_request_submit" value="Email Sturen">
+					</td></tr></tbody>
+				</table>
+				<h2>Vorige 10 aanvragen</h2>
+				<table class="wp-list-table widefat fixed striped pages">
+					<tbody><tr>
+						{{#requests}}
+						<tr>
+							<td class="manage-column">{{given_name}}</td>
+							<td class="manage-column">{{family_name}}</td>
+							<td class="manage-column">{{email}}</td>
+							<td class="manage-column">{{!rating}}niet beantwoord{{/rating}}{{rating}}</td>
+						</tr>
+						{{/requests}}
+					</tbody>
+				</table>
+			</form>
+		<?php
