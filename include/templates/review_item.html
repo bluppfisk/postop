@@ -20,8 +20,7 @@
 			<span class="aggregateRating_reviewCount">{{review_count}} reviews</span>
 		</div>
 		{{#reviews}}
-		<div class="postop_dotline"></div>
-		<div id="postop_id_{{id}}" class="postop_review" itemprop="review" itemscope itemtype="http://schema.org/Review">
+		<div id="postop_id_{{id}}" class="wrap postop_review" itemprop="review" itemscope itemtype="http://schema.org/Review">
 			<meta itemprop="author" content="{{author}}" />
 			<div class="postop_hide" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
 				<meta itemprop="bestRating" content="5" />

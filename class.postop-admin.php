@@ -107,13 +107,6 @@ class Postop_Admin
             'business_settings_section'
         );
 
-        // add_settings_field(
-        //     'business_address', 
-        //     'Adres', 
-        //     array( $this, 'business_name' ),
-        //     'postop_settings',
-        //     'business_settings_section'
-        // ); 
 		print_r($this->options);
         ?>
         <div class="wrap">
@@ -166,9 +159,6 @@ class Postop_Admin
 
 	public function request_reviews_page()
 	{
-		$this->include_goatee();
-		print(postop_Goatee::fill($this->load_template('feedback_vragen.html'), ['requests' => $this->get_requests(10)]));
-
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 			$new_request = array(
 				'given_name' => $_POST['po_request_given_name'],
@@ -177,12 +167,13 @@ class Postop_Admin
 				'access_token' => $this->generate_token(25)
 			);
 			if ($this->register_new_request($new_request) && $this->notify_customer($new_request)) {
-				echo("<h2>Ok!</h2>Email verstuurd aan ". $new_request['email']);		
+				echo("<h2>Ok!</h2>Email verstuurd aan ". $new_request['email']);
 			} else {
 				echo("<h2>Oeps!</h2>Er is iets misgelopen bij het emailen of het schrijven in de database.");	
-			}
-			
+			}		
 		}
+		$this->include_goatee();
+		print(postop_Goatee::fill($this->load_template('feedback_vragen.html'), ['requests' => $this->get_requests(10)]));
 	}
 
 	private function toggle_live($id)
