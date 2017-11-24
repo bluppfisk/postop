@@ -2,6 +2,8 @@
 
 class Postop_Admin
 {
+	private $options;
+
 	function __construct()
 	{
 		global $wpdb;
@@ -16,6 +18,7 @@ class Postop_Admin
 		{
 			remove_submenu_page('Postop', 'Postop');
 		});
+		add_action('admin_init', array( &$this, 'register_settings'));
 
 		if (isset($_GET['toggle'])) {
 			$this->toggle_live($_GET['toggle']);
@@ -56,11 +59,94 @@ class Postop_Admin
 			'postop_request',
 			array( &$this, 'request_reviews_page' )
 	    );
+
+	    add_submenu_page(
+	    	'Postop',
+	    	get_admin_page_title(),
+	    	'Instellingen',
+	    	'manage_options',
+	    	'postop_settings',
+	    	array(&$this, 'postop_settings')
+	    );
 	}
 
-	public function settings_page()
+	public function business_details()
 	{
-		echo( 'Settings page content.' );
+		printf(
+            '<input type="text" id="name" placeholder="Naam" name="business_details[name]" value="%s" /><br />
+            <input type="text" id="street" placeholder="Straat" name="business_details[street]" value="%s" /><br />
+            <input type="text" id="zip" placeholder="Postcode" name="business_details[zip]" value="%s" /><br />
+            <input type="text" id="city" placeholder="Stad" name="business_details[city]" value="%s" /><br />
+            <input type="text" id="region" placeholder="Regio" name="business_details[region]" value="%s" /><br />
+            <input type="text" id="country" placeholder="Landcode" name="business_details[country]" value="%s" /><br />
+            <input type="text" id="phone" placeholder="Telefoonnummer" name="business_details[phone]" value="%s" /><br />',
+        	isset(get_option('business_details')['name'])? get_option('business_details')['name'] : '',
+        	isset(get_option('business_details')['street'])? get_option('business_details')['street'] : '',
+        	isset(get_option('business_details')['zip'])? get_option('business_details')['zip'] : '',
+        	isset(get_option('business_details')['city'])? get_option('business_details')['city'] : '',
+        	isset(get_option('business_details')['region'])? get_option('business_details')['region'] : '',
+        	isset(get_option('business_details')['country'])?get_option('business_details')['country'] : '',
+        	isset(get_option('business_details')['phone'])? get_option('business_details')['phone'] : ''
+        );
+	}
+
+	public function postop_settings()
+	{
+		add_settings_section(
+			'business_settings_section',
+			'Zaakgegevens',
+			array(&$this, 'show_settings'),
+			'postop_settings'
+		);
+
+		add_settings_field(
+            'business_details',
+            'Adres',
+            array( $this, 'business_details' ),
+            'postop_settings',
+            'business_settings_section'
+        );
+
+        // add_settings_field(
+        //     'business_address', 
+        //     'Adres', 
+        //     array( $this, 'business_name' ),
+        //     'postop_settings',
+        //     'business_settings_section'
+        // ); 
+		print_r($this->options);
+        ?>
+        <div class="wrap">
+            <h1>Instellingen</h1>
+            <form method="post" action="options.php">
+            <?php
+                // This prints out all hidden setting fields
+                settings_fields( 'po_business_details' );
+                do_settings_sections( 'postop_settings' );
+                submit_button();
+            ?>
+            </form>
+        </div>
+        <?php
+	}
+
+	public function sanitize($input)
+    {
+    	foreach ($input as $key=>$value) {
+    		$new_input[$key] = sanitize_text_field($value);
+    	}
+
+        return $new_input;
+    }
+
+	public function show_settings()
+	{
+		echo ("Vul hier de zaakgegevens in.");
+	}
+
+	public function register_settings()
+	{
+		register_setting( 'po_business_details', 'business_details', array(&$this, 'sanitize') );
 	}
 
 	private function load_template($name)

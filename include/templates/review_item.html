@@ -7,16 +7,17 @@
 			<meta itemprop="streetAddress" content="{{street}}" />
 			<meta itemprop="addressLocality" content="{{city}}" />
 			<meta itemprop="addressRegion" content="{{region}}" />
+			<meta itemprop="addressCountry" content="{{country}}" />
 			<meta itemprop="postalCode" content="{{zip}}" />
 		</div>
-		<div class="wpcr3_aggregateRating" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+		<div class="aggregateRating" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
 			<meta itemprop="bestRating" content="5" />
 			<meta itemprop="worstRating" content="1" />
 			<meta itemprop="ratingValue" content="{{aggregate_rating}}" />
 			<meta itemprop="reviewCount" content="{{review_count}}" />
-			<span class="wpcr3_aggregateRating_overallText">Gemiddelde beoordeling: </span>&nbsp;
-			<div class="wpcr3_aggregateRating_ratingValue">{{stars}}</div>&nbsp;
-			<span class="wpcr3_aggregateRating_reviewCount">{{review_count}} reviews</span>
+			<span class="aggregateRating_overallText">Gemiddelde beoordeling: </span>&nbsp;
+			<div class="aggregateRating_ratingValue">{{stars}}</div>&nbsp;
+			<span class="aggregateRating_reviewCount">{{review_count}} reviews</span>
 		</div>
 		{{#reviews}}
 		<div class="postop_dotline"></div>

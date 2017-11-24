@@ -18,7 +18,7 @@ class Postop
 	public function show_reviews($params)
 	{
 		$this->include_goatee();
-		$num = intval($params['num']);
+		$num = isset($params['num']) ? intval($params['num']) : 5;
 		if ($requests = $this->get_live_requests($num)) {
 			$reviews = [];
 			foreach ($requests as $request) {
@@ -49,15 +49,10 @@ class Postop
 				$stars .= "*";
 			}
 
-			$business = [
+			$business = get_option('business_details');
+			$business += [
 				'reviews' => $reviews,
-				'name' => 'Eyecenter',
-				'url' => 'https://eyecenter.be',
-				'phone' => '09/12382143',
-				'street' => 'Street',
-				'zip' => '9000',
-				'city' => 'Gent',
-				'region' => 'Oost-Vlaanderen',
+				'url' => get_option('siteurl'),
 				'aggregate_rating' => $average,
 				'review_count' => $review_count,
 				'stars' => $stars

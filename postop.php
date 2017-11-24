@@ -33,12 +33,10 @@ function postop_instantiate()
 		require_once( plugin_dir_path( __FILE__ ) . 'class.postop-admin.php' );
 		$postop_admin = new Postop_Admin();
 		$postop_admin->init();
-		#add_action( 'init', array( &$postop_admin, 'init' ) );
 	} else {
 		require_once ( plugin_dir_path( __FILE__ ) . 'class.postop.php' );
 		$postop = new Postop();
 		$postop->init();
-		# add_action( 'init', array( &$postop, 'init' ) );
 	}
 }
 
@@ -78,8 +76,6 @@ function postop_activate()
 			'access_token' => 'blaapje'
 		)
 	);
-
-	// add_option( 'jal_db_version', $jal_db_version );
 }
 
 function postop_deactivate()
