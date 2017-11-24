@@ -113,8 +113,7 @@ class Postop_Admin
             <h1>Instellingen</h1>
             <form method="post" action="options.php">
             <?php
-                // This prints out all hidden setting fields
-                settings_fields( 'po_business_details' );
+                settings_fields( 'po_business_details' ); // hidden settings
                 do_settings_sections( 'postop_settings' );
                 submit_button();
             ?>
@@ -191,7 +190,7 @@ class Postop_Admin
 	private function notify_customer($new_request)
 	{
 		$subject = "Hoe was uw oogbehandeling bij Eyecenter?";
-		$message = "http://localhost:8000/?page_id=4&po_access_token=".$new_request['access_token'];
+		$message = site_url()."/?page_id=4&po_access_token=".$new_request['access_token'];
 
 		return wp_mail(
 			$new_request['email'],
@@ -210,7 +209,7 @@ class Postop_Admin
 	{
 		$requests = $this->db->get_results("SELECT * FROM ".$this->table_name." ORDER BY id DESC LIMIT ".$start.",".$limit, ARRAY_A);
 		if (!$requests) {
-			return false;
+			return [];
 		}
 		return $requests;
 	}
@@ -229,10 +228,10 @@ class Postop_Admin
 		$updated_review = array(
 			'given_name' => $_POST['given_name'],
 			'family_name' => $_POST['family_name'],
-			'rating' => $_POST['rating'],
+			'rating' => $_POST['rating'] ? : null,
 			'body' => $_POST['body'],
-			'may_be_published' => (empty($_POST['may_be_published']) ? false : true),
-			'approved' => (empty($_POST['approved']) ? false : true)
+			'may_be_published' => !empty($_POST['may_be_published']),
+			'approved' => !empty($_POST['approved'])
 		);
 		$success = $this->db->update($this->table_name, $updated_review, array('id' => $_POST['edit_review_id']));
 
@@ -261,7 +260,7 @@ class Postop_Admin
 						</tr>
 						<tr>
 							<td>Score (0&ndash;5):</td><td><select name="rating" id="postop_review_rating">
-								<option value=0>niet beantwoord</option>
+								<option value=''>niet beantwoord</option>
 								<?php
 								for ($i=1;$i<=5;$i++) {
 									print("<option value=".$i);
@@ -317,17 +316,22 @@ class Postop_Admin
 			</tbody>
 			</table>
 			<br />
+			Pagina:
 		<?php
 			$num_entries = $this->db->get_var("SELECT COUNT(id) FROM ".$this->table_name);
-			$pages = floor($num_entries/20);
+			$pages = floor($num_entries/10)+1;
 
-			for ($i=0;$i<$pages;$i++) {
-				echo("<a href='"
-					.admin_url('admin.php?page=postop_manage&paginate=')
-					.($i+1)
-					."'>"
-					.($i+1)
-					."</a> | ");
+			for ($i=1;$i<=$pages;$i++) {
+				if ($page == $i) {
+					echo(($i)." | ");
+				} else {
+					echo("<a href='"
+						.admin_url('admin.php?page=postop_manage&paginate=')
+						.($i)
+						."'>"
+						.($i)
+						."</a> | ");
+				}
 			}
 
 	}
