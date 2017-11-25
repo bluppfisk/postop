@@ -1,17 +1,15 @@
 <?php
 /*
 Plugin Name:  Post-op Feedback Collector
-Plugin URI:   https://worldofnonging.com/postop
+Plugin URI:   https://github.com/bluppfisk/postop
 Description:  Feedback Collector for Businesses
-Version:      20171031
+Version:      20171124
 Author:       Sander Van de Moortel
 Author URI:   https://worldofnonging.com
-License:      GPL2
-License URI:  https://www.gnu.org/licenses/gpl-2.0.html
+License:      MIT
 Text Domain:  wporg
 Domain Path:  /languages
 */
-
 
 
 // Make sure we don't expose any info if called directly
