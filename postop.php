@@ -3,7 +3,7 @@
 Plugin Name:  Post-op Feedback Collector
 Plugin URI:   https://github.com/bluppfisk/postop
 Description:  Feedback Collector for Businesses
-Version:      20171124
+Version:      20180104
 Author:       Sander Van de Moortel
 Author URI:   https://worldofnonging.com
 License:      MIT
@@ -44,6 +44,23 @@ function postop_activate()
 	// set up our plugin
 	global $wpdb;
 
+	$solicit_review_page_id = get_option('postop_review_page_id', false);
+
+	if ($solicit_review_page_id == false) {
+
+		$post_arr = array (
+			'post_title'   => 'Geef uw feedback',
+			'post_content' => '[postop_review]',
+			'post_status'  => 'publish',
+			'post_type'	   => 'page',
+		);
+
+		$solicit_review_page_id = wp_insert_post($post_arr);
+
+		add_option('postop_review_page_id', $solicit_review_page_id);
+
+	}
+
 	$table_name = $wpdb->prefix . 'postop_reviews';
 	
 	$charset_collate = $wpdb->get_charset_collate();
@@ -83,9 +100,15 @@ function postop_deactivate()
 
 function postop_uninstall()
 {
-	// uninstall our plugin
+	// remove database
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'postop_reviews';
-
 	$wpdb->query("DROP TABLE IF EXISTS $table_name");
+
+	// remove associated page
+	$solicit_review_page_id = get_option('postop_review_page_id', false);
+	wp_delete_post($solicit_review_page_id, true);
+
+	// remove associated option
+	delete_option('postop_review_page_id');
 }

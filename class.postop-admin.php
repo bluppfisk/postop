@@ -189,8 +189,9 @@ class Postop_Admin
 
 	private function notify_customer($new_request)
 	{
+		$page_id = get_option('postop_review_page_id');
 		$subject = "Hoe was uw oogbehandeling bij Eyecenter?";
-		$message = site_url()."/?page_id=4&po_access_token=".$new_request['access_token'];
+		$message = site_url()."/?page_id=". $page_id ."&po_access_token=".$new_request['access_token'];
 
 		return wp_mail(
 			$new_request['email'],
