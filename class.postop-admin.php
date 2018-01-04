@@ -196,7 +196,8 @@ class Postop_Admin
 		return wp_mail(
 			$new_request['email'],
 			$subject,
-			$message
+			$message,
+			"From: Eyecenter <noreply@eyecenter.be>"
 		);
 	}
 

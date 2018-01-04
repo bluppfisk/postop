@@ -115,6 +115,15 @@ class Postop
 					// persist data
 					$result = $this->db->update( $this->table_name, $review_data, array( 'access_token' => $access_token ) );
 
+					// email admin
+					wp_mail(
+						wp_get_current_user()->user_email,
+						"Nieuwe review",
+						"Er is een nieuwe review ingevuld, zie ". admin_url('admin.php?page=postop_manage'),
+						"From: Eyecenter <noreply@eyecenter.be>"
+					);
+
+					// thank user
 					$this->thank_you();
 				} else {
 					$this->form( $review_data );
